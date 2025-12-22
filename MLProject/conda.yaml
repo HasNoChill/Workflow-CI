@@ -2,10 +2,10 @@ name: churn-env
 channels:
   - defaults
 dependencies:
-  - python=3.12.7
+  - python=3.12
   - pip
   - pip:
+      - mlflow
       - pandas
       - numpy
       - scikit-learn
-      - mlflow
