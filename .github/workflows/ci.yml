@@ -1,41 +1,24 @@
-name: MLflow CI Pipeline
+name: MLflow CI
 
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+on: [push, pull_request]
 
 jobs:
-  mlflow-project:
+  run-mlflow:
     runs-on: ubuntu-latest
 
     steps:
-    # 1. set up job + checkout
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    # 2. set up python 3.12.7
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
-        python-version: "3.12.7"
+        python-version: '3.12'
 
-    # 3. check env
-    - name: Check Python Version
-      run: python --version
-
-    # 4. install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install mlflow pandas numpy scikit-learn
+        pip install -r requirements.txt
 
-    # 5. run mlflow project
     - name: Run MLflow Project
       run: |
-        mlflow run MLProject --env-manager=virtualenv
-
-    # 6. get latest mlflow run_id
-    - name: Get latest MLflow run_id
-      run: |
-        mlflow runs list
+        mlflow run .
