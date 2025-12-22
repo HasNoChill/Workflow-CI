@@ -33,7 +33,7 @@ jobs:
     # 5. run mlflow project
     - name: Run MLflow Project
       run: |
-        mlflow run MLProject
+        mlflow run MLProject --env-manager=virtualenv
 
     # 6. get latest mlflow run_id
     - name: Get latest MLflow run_id
