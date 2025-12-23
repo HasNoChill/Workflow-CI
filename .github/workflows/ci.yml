@@ -25,7 +25,7 @@ jobs:
         cd MLProject
         source $(conda info --base)/etc/profile.d/conda.sh
         conda activate churn-env
-        mlflow run . Customer_Churn_Experiment
+        mlflow run . --experiment-name Customer_Churn_Experiment
 
     - name: Upload MLflow artefak
       uses: actions/upload-artifact@v4
