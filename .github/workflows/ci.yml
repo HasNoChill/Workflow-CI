@@ -9,16 +9,26 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Set up ular conda
+      uses: conda-incubator/setup-miniconda@v3
       with:
-        python-version: '3.12'
+        miniconda-version: "latest"
+        activate-environment: churn-env
+        environment-file: ./MLProject/conda.yaml
+        auto-activate-base: false
 
-    - name: Install dependencies
+    - name: Run MLflow   
+      shell: bash
+      env:
+        MLFLOW_TRACKING_URI: file:${{ github.workspace }}/MLProject/mlruns
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        cd MLProject
+        source $(conda info --base)/etc/profile.d/conda.sh
+        conda activate mlflow-env
+        mlflow run . Customer_Churn_Experiment
 
-    - name: Run MLflow Project
-      run: |
-        mlflow run MLProject
+    - name: Upload MLflow artefak
+      uses: actions/upload-artifact@v4
+      with:
+        name: mlflow-artefak
+        path: MLProject/mlruns
